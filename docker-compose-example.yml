@@ -1,0 +1,21 @@
+services:
+  n8n:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=changeme
+      - GENERIC_TIMEZONE=America/New_York
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ~/.claude:/home/node/.claude
+      - ~/.codex:/home/node/.codex
+      - ~/.config/gh:/home/node/.config/gh
+      # Add repos below:
+      # - /path/to/your/repo:/home/node/repos/repo-name
+
+volumes:
+  n8n_data:
