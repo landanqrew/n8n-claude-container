@@ -1,31 +1,20 @@
 FROM n8nio/n8n
 
+ARG GH_VERSION=2.90.0
+ARG TARGETARCH
+
 USER root
 
-RUN apk add --no-cache \
-    python3 \
-    py3-pip \
-    go \
-    git \
-    curl \
-    wget \
-    bash \
-    jq \
-    ripgrep \
-    make \
-    openssh \
-    vim \
-    nano \
-    tree \
-    github-cli
+# GitHub CLI
+ADD https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_${TARGETARCH}.tar.gz /tmp/gh.tar.gz
+RUN tar -xzf /tmp/gh.tar.gz -C /tmp \
+    && cp "/tmp/gh_${GH_VERSION}_linux_${TARGETARCH}/bin/gh" /usr/local/bin/gh \
+    && chmod +x /usr/local/bin/gh \
+    && rm -rf /tmp/gh.tar.gz "/tmp/gh_${GH_VERSION}_linux_${TARGETARCH}"
 
-# uv (Python package manager)
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Claude CLI
-RUN npm install -g @anthropic-ai/claude-code
-
-# Codex CLI
-RUN npm install -g @openai/codex
+# Claude Code and Codex CLIs
+RUN npm install -g @anthropic-ai/claude-code @openai/codex \
+    && ln -sf "$(npm prefix -g)/bin/claude" /usr/local/bin/claude \
+    && ln -sf "$(npm prefix -g)/bin/codex" /usr/local/bin/codex
 
 USER node

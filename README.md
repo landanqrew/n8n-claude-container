@@ -1,15 +1,11 @@
 # n8n + Claude Code + Codex Container
 
-A Docker setup for running [n8n](https://n8n.io/) with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Codex CLI](https://github.com/openai/codex), and a full development toolchain.
+A Docker setup for running [n8n](https://n8n.io/) with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and [Codex CLI](https://github.com/openai/codex).
 
 ## Included Tools
 
-- Python 3, uv
 - Node.js
-- Go
-- Git, GitHub CLI
-- curl, wget, jq, ripgrep, make
-- vim, nano, tree
+- Git, GitHub CLI, ssh, tree
 - Claude Code CLI
 - Codex CLI
 
@@ -42,7 +38,7 @@ A Docker setup for running [n8n](https://n8n.io/) with [Claude Code](https://doc
 Shell into the container:
 
 ```bash
-docker compose exec n8n bash
+docker compose exec n8n sh
 ```
 
 Then run `claude` in any mounted repo:
@@ -57,10 +53,10 @@ claude
 Shell into the container:
 
 ```bash
-docker compose exec n8n bash
+docker compose exec n8n sh
 ```
 
-Then run `codex` in any mounted repo:~
+Then run `codex` in any mounted repo:
 
 ```bash
 cd /home/node/repos/repo-name
@@ -75,9 +71,25 @@ codex login
 
 Choose "Sign in with ChatGPT" and complete the browser flow. The compose file mounts `~/.codex` into the container so the login persists across rebuilds.
 
+## Using GitHub CLI
+
+Shell into the container:
+
+```bash
+docker compose exec n8n sh
+```
+
+Then authenticate GitHub CLI:
+
+```bash
+gh auth login
+```
+
+The compose file mounts `~/.config/gh` into the container so the login persists across rebuilds.
+
 ## Prerequisites
 
 - Docker and Docker Compose
 - A valid Claude Code authentication (`~/.claude`)
 - A valid Codex authentication (`~/.codex`), created with `codex login`
-- GitHub CLI authentication (`~/.config/gh`)
+- A valid GitHub CLI authentication (`~/.config/gh`), created with `gh auth login`
