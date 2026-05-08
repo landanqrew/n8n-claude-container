@@ -10,6 +10,7 @@ services:
       - N8N_BASIC_AUTH_USER=admin
       - N8N_BASIC_AUTH_PASSWORD=changeme
       - GENERIC_TIMEZONE=America/New_York
+      - NODES_EXCLUDE=[]
     volumes:
       - n8n_data:/home/node/.n8n
       - ~/.claude:/home/node/.claude
